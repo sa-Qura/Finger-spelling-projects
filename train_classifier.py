@@ -2,7 +2,7 @@ import pickle
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, f1_score
 import numpy as np
 import os
 
@@ -58,6 +58,20 @@ y_predict = model.predict(x_test)
 # Calculate the accuracy score
 score = accuracy_score(y_test, y_predict)
 print(f'{score * 100:.2f}% of samples were classified correctly!')
+
+# Calculate overall metrics
+precision = precision_score(y_test, y_predict, average='weighted') * 100
+recall = recall_score(y_test, y_predict, average='weighted') * 100
+f1 = f1_score(y_test, y_predict, average='weighted') * 100
+
+print(f'Precision: {precision:.2f}%')
+print(f'Recall: {recall:.2f}%')
+print(f'F1 Score: {f1:.2f}%')
+
+# Generate detailed classification report
+report = classification_report(y_test, y_predict, target_names=[str(i) for i in np.unique(labels)])
+print("\nDetailed Classification Report:\n")
+print(report)
 
 # Check if DATA_DIR exists and is accessible
 if not os.path.exists(DATA_DIR):
